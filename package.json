@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
     "axios": "^0.19.2",
     "telegraf": "^3.37.0"

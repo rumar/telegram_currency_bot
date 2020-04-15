@@ -15,16 +15,21 @@ bot.use(async (ctx, next) => {
   console.log("Response time: %sms", ms);
 });
 
-// bot.context.db = {
-//   getScores: (val) => {
-//     return val;
-//   },
-// };
+let db = {
+  currency: []
+}
 
-bot.on("text", (ctx) => {
-  axios.get(apiUrl).then(res => {
-      console.log(res.data)
+bot.on("text", async (ctx) => {
+  await axios.get(apiUrl).then(res => {
+    db.currency = res.data;
+    return console.log(res.data)
   })
-  return ctx.reply(`${ctx.message.from.username}`);
+  await ctx.replyWithHTML(`
+    <b>UAH Curency for today</b>\n
+    <b>USD -</b> buy: ${db.currency[0].buy}, sale: ${db.currency[0].sale}\n
+    <b>EUR -</b> buy: ${db.currency[1].buy}, sale: ${db.currency[1].sale}\n
+    <b>RUR -</b> buy: ${db.currency[2].buy}, sale: ${db.currency[2].sale}\n
+    <b>BTC -</b> buy: ${db.currency[3].buy}, sale: ${db.currency[3].sale}\n
+  `);
 });
 bot.launch();
