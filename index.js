@@ -1,6 +1,7 @@
 "use strict";
 const axios = require("axios");
 const Telegraf = require("telegraf");
+const mock = require("./mock");
 
 const token = "1073385196:AAEO-vEVHiGlKgvGMwmakwu5vZin9KeRKMY";
 const apiUrl =
@@ -16,20 +17,34 @@ bot.use(async (ctx, next) => {
 });
 
 let db = {
-  currency: []
-}
+  currency: [],
+};
 
 bot.on("text", async (ctx) => {
-  await axios.get(apiUrl).then(res => {
-    db.currency = res.data;
-    return console.log(res.data)
-  })
-  await ctx.replyWithHTML(`
-    <b>UAH Curency for today</b>\n
-    <b>USD -</b> buy: ${db.currency[0].buy}, sale: ${db.currency[0].sale}\n
-    <b>EUR -</b> buy: ${db.currency[1].buy}, sale: ${db.currency[1].sale}\n
-    <b>RUR -</b> buy: ${db.currency[2].buy}, sale: ${db.currency[2].sale}\n
-    <b>BTC -</b> buy: ${db.currency[3].buy}, sale: ${db.currency[3].sale}\n
-  `);
+  console.log(ctx.message);
+  // if (ctx.message.from.username !== "rymaryurii") return;
+  console.log(ctx.message.from.username);
+  // await axios.get(apiUrl).then((res) => {
+  //   db.currency = res.data;
+  //   return console.log(res.data);
+  // });
+  db.currency = mock.currencyMock;
+
+  if (ctx.message.from.username !== "rymaryurii") {
+    return;
+  } else {
+    await ctx.reply(`Hi`);
+  }
+  // await ctx.replyWithHTML(`
+  //   <b>UAH Curency for today</b>\n
+  //   <b>USD -</b> buy: ${db.currency[0].buy}, sale: ${db.currency[0].sale}\n
+  //   <b>EUR -</b> buy: ${db.currency[1].buy}, sale: ${db.currency[1].sale}\n
+  //   <b>RUR -</b> buy: ${db.currency[2].buy}, sale: ${db.currency[2].sale}\n
+  //   <b>BTC -</b> buy: ${db.currency[3].buy}, sale: ${db.currency[3].sale}\n
+  // `);
 });
-bot.launch();
+
+// TODO:get status, if launch -> stop
+bot.stop(() => {
+  bot.launch({ polling: { timeout: 1 } });
+});
