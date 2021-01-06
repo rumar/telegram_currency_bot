@@ -4,7 +4,7 @@
     "start:dev": "nodemon index.js"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "telegraf": "^3.37.0",
     "telegraf-inline-menu": "^4.0.0"
   },
